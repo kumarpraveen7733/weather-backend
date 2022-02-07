@@ -1,4 +1,3 @@
-// load up the express framework and body-parser helper
 "use strict"
 
 var express = require('express');
@@ -42,33 +41,54 @@ app.post('/v1/auth',  authentication)
 
 function get_weather(request, response) 
 {
+  var authHeaderToken = request.headers.authorization;
+  if (!authHeaderToken)
+  {
+    response.send("You need to request with authorization token")
+  }
+  else if (authHeaderToken.replace('Bearer ', '') == "eyJhbCI6IkhTMjU2IiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQeyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.BsJ0pCEf_hKnDrPo95wDdoNYhDqK0fV4t2muCqMTDUc")
+  {
     response.json({"coord":{"lon":-123.262,"lat":44.5646},"weather":[{"id":804,"main":"Clouds","description":"overcast clouds","icon":"04d"}],"base":"stations","main":{"temp":282,"feels_like":282,"temp_min":280.02,"temp_max":284.57,"pressure":1027,"humidity":77},"visibility":10000,"wind":{"speed":0,"deg":0},"clouds":{"all":100},"dt":1642198763,"sys":{"type":2,"id":2040223,"country":"US","sunrise":1642175199,"sunset":1642208235},"timezone":-28800,"id":5720727,"name":"Corvallis","cod":200})
+  }
+  else
+ {
+    response.send("Authorization failed.")
+  }
 }
 
 function greeting(request, response) 
 {
-  var authHeaderToken = req.headers.authorization;
-
-  
+  var authHeaderToken = request.headers.authorization;
+  if (!authHeaderToken) 
+  {
+    response.send("You need to request with authorization token")
+  }
+  else if (authHeaderToken.replace('Bearer ', '') == "eyJhbCI6IkhTMjU2IiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQeyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.BsJ0pCEf_hKnDrPo95wDdoNYhDqK0fV4t2muCqMTDUc")
+  {
+  response.send("Hello/n")
+  }
+  else {
+    response.send("Authorization failed.")
+  }
 }
 
 function authentication(request, response) 
 {
-  console.log("1")
   var username = request.body.username;
   var password = request.body.password;
-  
-
+  var jwt = "eyJhbCI6IkhTMjU2IiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQeyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.BsJ0pCEf_hKnDrPo95wDdoNYhDqK0fV4t2muCqMTDUc"
+  const currentTime = new Date();
   if (username=='Praveen' && password=='123')
   {
-      
-      response.json({"token": "5874dfgb32"})
+      response.json
+      ({
+        "Access token":  jwt,
+        "Expires": currentTime
+        })
   }
   else 
   {
-        
         response.sendStatus(401)
         // response.json({"unauthorized":401})
   }
-
 }
