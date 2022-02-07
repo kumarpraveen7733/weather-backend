@@ -90,5 +90,6 @@ function authentication(request, response)
   {
         response.sendStatus(401)
         // response.json({"unauthorized":401})
+        //response
   }
 }
